@@ -2,7 +2,7 @@ wall/
 semi_restful/
 migrations/
 __pycache__/
-db.sqlite3/
+db.sqlite3
 venv/
 .vscode/
 secret.txt
