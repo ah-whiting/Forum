@@ -2,12 +2,7 @@ from django.shortcuts import render, redirect
 import bcrypt
 from .models import User
 from django.contrib import messages
-
-
-# def root(request):
-#     if 'id' in request.session:
-#         return redirect('/')
-#     return render(request, 'login/index.html')
+from django.http import JsonResponse
 
 def create_user(request):
     e = User.objects.validator(request.POST)
@@ -18,13 +13,11 @@ def create_user(request):
 
     user = User.objects.create(
         username = request.POST["username"],
-        first_name = request.POST['first_name'],
-        last_name = request.POST['last_name'],
         email = request.POST['email'],
         pass_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
     )
     request.session['id'] = user.id
-    request.session['first_name'] = user.first_name
+    request.session['username'] = user.username
     return redirect('/success')
 
 def login(request):
@@ -38,7 +31,7 @@ def login(request):
         return redirect('/login')
     user = User.objects.get(email = request.POST['email'])
     request.session['id'] = user.id
-    request.session['first_name'] = user.first_name
+    request.session['username'] = user.username
     messages.success(request, "Successful Login")
     return redirect ('/success')
 
@@ -51,5 +44,13 @@ def success(request):
 def logout(request):
     request.session.clear()
     return redirect('/login')
+
+def validate_username(request):
+    if request.method == 'GET':
+        data = {}
+        data = {
+            'is_taken': User.objects.filter(username__iexact = request.GET['username']).exists()
+        }
+    return JsonResponse(data)    
 
 

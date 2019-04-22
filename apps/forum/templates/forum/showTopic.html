@@ -17,10 +17,6 @@
       <h2 class="p-2">{{ topic.title }}</h2>
       <div class="row justify-content-between p-2">
         <div class="col-3">
-          <!-- <a
-            href="/topics/{{ topic.id }}/comments/new"
-            class="btn-sm btn-success"
-            >+ New Comment</a> -->
         </div>
         <div class="col-4"><a>pages</a></div>
       </div>
@@ -40,7 +36,8 @@
               <p class="p-5 messageBody">{{ c.message }}</p>
               {% if c.updated_at != c.created_at %}
               <p class="text-secondary">Last edit @: {{ c.updated_at }}</p>
-              {% endif %} {% if c.created_by.id == request.session.id and c.is_active %}
+              {% endif %} 
+              {% if c.created_by.id == request.session.id and c.is_active %}
               <button
                 onclick="editComment({{ c.id }})"
                 class="btn-sm btn-warning"
