@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <div class="container justify-content-center">
+      <div class="row my-5 text-center">
+        <div class="col"><h2>Login and Registration</h2></div>
+      </div>
+      <div class="row">
+        <div class="col-5 mx-4">
+          <h3>Register Here:</h3>
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li class="text-danger">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <form action="/register" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="">Username:</label>
+              <input type="text" name="username" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">First Name:</label>
+              <input type="text" name="first_name" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">Last Name:</label>
+              <input type="text" name="last_name" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">Email:</label>
+              <input type="text" name="email" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">Password:</label>
+              <input type="text" name="password" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">Confirm Password:</label>
+              <input type="text" name="c_password" id="" class="form-control" />
+              <button type="submit" class="my-2 btn btn-secondary">
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-5 mx-4">
+          <h3>Login:</h3>
+          <form action="/login" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="">Email:</label>
+              <input type="text" name="email" id="" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="">Password:</label>
+              <input type="text" name="password" id="" class="form-control" />
+              <button type="submit" class="my-2 btn btn-secondary">
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+{% extends 'forum/base.html' %} {% block content %}
+<style>
+  .userinfo {
+    width: 200px;
+    border-right: 1px solid grey;
+  }
+  .messageHeader {
+    font-size: 0.75em;
+    border-bottom: 1px solid grey;
+    margin: -11px;
+  }
+</style>
+
+<div class="container p-1">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <h2 class="p-2">{{ topic.title }}</h2>
+      <div class="row justify-content-between p-2">
+        <div class="col-3">
+          <!-- <a
+            href="/topics/{{ topic.id }}/comments/new"
+            class="btn-sm btn-success"
+            >+ New Comment</a> -->
+        </div>
+        <div class="col-4"><a>pages</a></div>
+      </div>
+    </div>
+    <div class="col-12">
+      <table class="table table-dark">
+        <tbody>
+          {% for c in comments %}
+          <tr>
+            <td scope="row" class="userinfo">
+              <h5>
+                <a href="#">{{ c.created_by.username }}</a>
+              </h5>
+            </td>
+            <td id="cid_{{ c.id }}">
+              <p class="messageHeader">{{ c.created_at }}</p>
+              <p class="p-5 messageBody">{{ c.message }}</p>
+              {% if c.updated_at != c.created_at %}
+              <p class="text-secondary">Last edit @: {{ c.updated_at }}</p>
+              {% endif %} {% if c.created_by.id == request.session.id and c.is_active %}
+              <button
+                onclick="editComment({{ c.id }})"
+                class="btn-sm btn-warning"
+              >
+                Edit
+              </button>
+              <button
+                class="btn-sm btn-danger confirmButton"
+                action="/comments/{{ c.id }}/delete"
+                desc="delete this comment"
+              >
+                Delete
+              </button>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <form action="/topics/{{ topic.id }}/comments" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="">Post a message</label>
+          <textarea class="form-control" name="message" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-success">
+          Post
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function editComment(id) {
+    $(`#cid_${id} .messageBody`).html(function(index, oldhtml) {
+      return `
+      <form method= "POST" action="/comments/${id}">
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea class="form-control" name="message" rows="5">${oldhtml}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Post Edit</button>
+      </form>`;
+    });
+  }
+</script>
+{% endblock %}

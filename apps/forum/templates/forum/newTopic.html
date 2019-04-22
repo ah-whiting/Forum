@@ -1,0 +1,47 @@
+{% extends 'forum/base.html' %} {% block content %}
+<div class="container p-5">
+  <div class="row justify-content-center">
+    <div id="formWrapper" class="col-10">
+      <form action="/topics" method="POST">
+      {% csrf_token %}
+        <div class="form-group">
+          <label for=""><h5>Title:</h5></label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            id=""
+            placeholder=""
+          />
+          {% if messages %}
+            
+          {% endif %}
+          {% if messages %}
+            {% for m in messages %}
+                {% if "title" in m.tags %}
+                    <p class="text-danger">{{m}}</p>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for=""><h5>Content:</h5></label>
+          <textarea
+            class="form-control"
+            name="message"
+            rows="5"
+          ></textarea>
+          {% if messages %}
+            {% for m in messages %}
+                {% if "message" in m.tags %}
+                    <p class="text-danger">{{m}}</p>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
