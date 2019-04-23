@@ -3,12 +3,13 @@ from django.contrib import messages
 from django.utils import timezone
 from .models import Topic, Comment
 from apps.login.models import User
+from django.db.models import Max
 
 def root(request):
     # if not 'id' in request.session:
     #     return redirect('/login')
     context = {
-        "topics" : Topic.objects.all()
+        "topics" : Topic.objects.annotate(max_comment_date=Max('comments__created_at')).order_by('-max_comment_date')
     }
     return render(request, 'forum/index.html', context)
 
