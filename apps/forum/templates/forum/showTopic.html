@@ -32,10 +32,10 @@
               </h5>
             </td>
             <td id="cid_{{ c.id }}">
-              <p class="messageHeader">{{ c.created_at }}</p>
+              <p class="messageHeader"> {{c.elapsed_time.str}}</p>
               <p class="p-5 messageBody">{{ c.message }}</p>
-              {% if c.updated_at != c.created_at %}
-              <p class="text-secondary">Last edit @: {{ c.updated_at }}</p>
+              {% if c.is_edited %}
+              <p class="text-secondary">Last edit @: {{ c.elapsed_update.str }}</p>
               {% endif %} 
               {% if c.created_by.id == request.session.id and c.is_active %}
               <button

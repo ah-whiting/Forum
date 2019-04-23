@@ -39,15 +39,20 @@ def create_topic(request):
 
 def show_topic(request, id):
     page = 1
-    page_count = 10
-    comment_count = Topic.objects.get(id = id).comments.count()
     if "page" in request.GET:
         page = int(request.GET["page"])
+    page_count = 10
+    comment_count = Topic.objects.get(id = id).comments.count()
     context = {
         "topic" : Topic.objects.get(id = id),
         "comments" : Topic.objects.get(id = id).comments.all()[page_count*(page-1): page_count*page],
         "last_page": comment_count // page_count + (comment_count % page_count > 0)
     }
+    if not f"topic_{id}" in request.session:
+        context["topic"].views += 1
+        context["topic"].save()
+        request.session[f"topic_{id}"] = True
+
     return render(request, 'forum/showTopic.html', context)
 
 def delete_topic(request, id):
@@ -75,6 +80,7 @@ def update_comment(request, id):
         return redirect('/login')
     comment = Comment.objects.get(id = id)
     comment.message = request.POST["message"]
+    comment.is_edited = True
     comment.save()
     return redirect(f"/topics/{comment.topic.id}")
 

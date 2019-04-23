@@ -22,6 +22,7 @@ class Topic(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
+    views = models.IntegerField(default = 0)
     created_by = models.ForeignKey("login.User", related_name = 'topics')
     objects = TopicManager()
     def elapsed_time(self):
@@ -38,6 +39,37 @@ class Comment(models.Model):
     topic = models.ForeignKey(Topic, related_name = 'comments')
     created_by = models.ForeignKey("login.User", related_name = 'comments')
     is_active = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
     objects = CommentManager()
-    def elapsed_time(self):
-        return timezone.now() - self.created_at
+    def elapsed_time(self, update=False):
+        time = self.created_at
+        context = {
+            "str":"some string",
+            "delta": timezone.now() - time
+        }
+        delta = context["delta"].total_seconds()
+        if delta < 60:
+            context["str"] = f"{int(delta)} seconds ago"
+        elif delta < 3600:
+            context["str"] = f"{int(delta // 60)} minutes ago"
+        elif delta < 3600*24:
+            context["str"] = f"{int(delta // 3600)} hours ago"
+        else:
+            context["str"] = f"{int(context['delta'].days)} days ago"
+        return context
+    def elapsed_update(self):
+        time = self.updated_at
+        context = {
+            "str":"some string",
+            "delta": timezone.now() - time
+        }
+        delta = context["delta"].total_seconds()
+        if delta < 60:
+            context["str"] = f"{int(delta)} seconds ago"
+        elif delta < 3600:
+            context["str"] = f"{int(delta // 60)} minutes ago"
+        elif delta < 3600*24:
+            context["str"] = f"{int(delta // 3600)} hours ago"
+        else:
+            context["str"] = f"{int(context['delta'].days)} days ago"
+        return context

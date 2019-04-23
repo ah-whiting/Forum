@@ -36,10 +36,10 @@
           <tr>
             <td scope="row"><a href="/topics/{{t.id}}">{{ t.title }}</a></td>
             <td>{{ t.created_by.username }}</td>
-            <td>views</td>
+            <td>{{ t.views }}</td>
             <td>{{ t.comments.count }}</td>
             <td>{{ t.comments.last.created_by.username }} 
-              <a class="d-block" href="/topics/{{t.id}}?page={{t.last_page}}">{{ t.comments.last.created_at }}</a></td>
+              <a class="d-block" href="/topics/{{t.id}}?page={{t.last_page}}">{{ t.comments.last.elapsed_time.str }}</a></td>
             <td>
               {% if request.session.id == t.created_by.id %}<button
                 class="btn-sm btn-outline-danger confirmButton"
